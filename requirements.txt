@@ -10,3 +10,5 @@ Pillow==9.4.0
 tensorflow==2.11.0
 redis==4.4.0
 tensorflow-io
+mysqlclient
+django-environ
