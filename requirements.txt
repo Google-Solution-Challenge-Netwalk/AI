@@ -12,3 +12,4 @@ redis==4.4.0
 tensorflow-io
 mysqlclient
 django-environ
+google.cloud.storage
