@@ -21,9 +21,9 @@ class GarbageDecisionAPI(APIView):
         image = cv2.resize(image,(224,224))
         result = descison.delay(image.tolist())
         
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "model/skillful-air-376916-ea28d0e65ede.json"
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "model/affable-case-376500-d0fc60c7f7f2.json"
         storage_client = storage.Client()
-        bucket = storage_client.get_bucket("netwalk_bucket")
+        bucket = storage_client.get_bucket("netwalk-bucket")
         blob = bucket.blob("test_data")
         blob.upload_from_file(BytesIO(file))
         
