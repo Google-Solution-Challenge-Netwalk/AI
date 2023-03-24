@@ -32,9 +32,9 @@ def descison(image):
     proba = proba[idx].astype(np.float64)
     proba = np.floor(proba*1000)/10
     
-    image_name_list = {'Garbage':label[0],'Accuracy':proba[0]}
+    result = label[0]
     
-    return image_name_list
+    return result
 
 
 

@@ -4,9 +4,8 @@ from rest_framework.views import APIView
 from .tasks import descison
 import numpy as np
 import cv2
-import os
-from google.cloud import storage
-from io import BytesIO
+import requests
+
 
 class GarbageDecisionAPI(APIView):
     
@@ -16,15 +15,18 @@ class GarbageDecisionAPI(APIView):
     
     def post(self, request):
         file = request.FILES['id'].read()
+        act_no = request.POST.get('act_no')
         file_bytes = np.fromstring(file, np.uint8)
         image = cv2.imdecode(file_bytes,cv2.IMREAD_COLOR)
         image = cv2.resize(image,(224,224))
         result = descison.delay(image.tolist())
         
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "model/affable-case-376500-d0fc60c7f7f2.json"
-        storage_client = storage.Client()
-        bucket = storage_client.get_bucket("netwalk-bucket")
-        blob = bucket.blob("test_data")
-        blob.upload_from_file(BytesIO(file))
+        form_data = {
+            'file': file,
+            'category': result.get(),
+            'act_no': act_no
+        }
+        server = requests.post('http://localhost:8080/api/v1/gcs',data=form_data)
         
-        return Response(result.get(),status=200)
+        
+        return Response(server.text,status=200)
